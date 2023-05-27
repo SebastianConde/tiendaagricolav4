@@ -3,8 +3,8 @@ from ui.facturas_UI import Ui_MainWindow
 
 class CrudFacturas():
     @classmethod
-    def crear_Factura(cls, fecha):
-        nueva_factura = Facturas(fecha)
+    def crear_Factura(cls):
+        nueva_factura = Facturas()
         return nueva_factura
 
     @classmethod
@@ -12,9 +12,10 @@ class CrudFacturas():
         lista_facturas_cliente = cliente.lista_facturas_asociadas()
 
         for factura_cliente in lista_facturas_cliente:
-            fecha_obtenida = factura_cliente.obtener_fecha
+            fecha_obtenida = str(factura_cliente.obtener_fecha)
             if fecha_obtenida == fecha:
                 return factura_cliente
+
 
     @classmethod
     def actualizar_factura(cls, factura, producto, cantidad):

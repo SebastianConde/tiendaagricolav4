@@ -13,7 +13,7 @@ producto3 = CrudAntibiotico.crear_antibiotico("Curazoo", "500kg", "Bovinos", 500
 cliente1 = CrudCliente.crear_cliente("Luis Sebastian Conde Toro", "1004756531")
 cliente2 = CrudCliente.crear_cliente("Liliana Toro Gallego", "24173849")
 
-factura1 = CrudFacturas.crear_Factura("20/03/2023")
+factura1 = CrudFacturas.crear_Factura()
 CrudFacturas.actualizar_factura(factura1, producto1, 2)
 CrudFacturas.actualizar_factura(factura1, producto2, 1)
 
@@ -21,5 +21,8 @@ cliente1.agregar_factura(factura1)
 
 cliente1.mostrar_cliente()
 
-factura = CrudFacturas.buscar_factura(cliente1, "20/03/2023")
-print(type(factura))
+fecha = factura1.obtener_fecha
+
+
+print(fecha)
+print(type(factura1))

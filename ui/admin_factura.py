@@ -6,8 +6,8 @@ from crud.CrudControlFertilizantes import CrudControlFertilizantes
 from crud.CrudControlPlagas import CrudControlPlagas
 from crud.CrudAntibiotico import CrudAntibiotico
 from ui.admin_popup import Popup
-
 from model.Facturas import Facturas
+from ui.admin_factura_buscada import Factura_buscadaWindow
 
 
 class FacturasWindow(QMainWindow):
@@ -27,34 +27,40 @@ class FacturasWindow(QMainWindow):
         self.ui.btn_buscar_factura.clicked.connect(self.buscar_factura)
         self.ui.btn_actualizar_factura.clicked.connect(self.actualizar_factura)
         self.ui.btn_eliminar_factura.clicked.connect(self.eliminar_factura)
+        self.ui.btn_ver_factura_buscada.clicked.connect(self.open_factura)
 
     def abrir_popup(self):
         Popup.open_popup()
 
     @pyqtSlot()
-    def crear_factura(self):
-        fecha = self.ui.recibir_fecha.text()
+    def open_factura(self):
+        if(self.factura is not None):
+            self.factura_buscadaWindow = Factura_buscadaWindow(self.factura, self.cliente)
+            self.factura_buscadaWindow.show()
 
-        if fecha:
-            factura = CrudFacturas.crear_Factura(fecha)
+    @pyqtSlot()
+    def crear_factura(self):
+        factura = CrudFacturas.crear_Factura()
+        if factura:
             self.factura = factura
-            if factura:
-                self.ui.recibir_fecha.clear()
+            self.factura.recibir_datos_cliente(self.cliente)
+            self.cliente.agregar_factura(self.factura)
+            self.ui.mostrar_fecha.setText(str(self.factura.obtener_fecha))
+            popup = Popup()
+            popup.mensaje_popup("Factura creada exitosamente")
+            popup.exec_()
         else:
             popup = Popup()
-            popup.mensaje_popup("Error: campos requeridos para crear")
+            popup.mensaje_popup("Error: No se pudo crear la factura")
             popup.exec_()
 
     @pyqtSlot()
     def buscar_factura(self):
-        fecha = self.ui.recibir_fecha_buscar.text()
-        self.ui.mostrar_cliente_asociado.setText(fecha)
-
-        if fecha:
-            factura_buscada = CrudFacturas.buscar_factura(self.cliente, fecha)
-            self.ui.mostrar_total_buscar.setText(str(factura_buscada.obtener_total))
-
-                #self.ui.mostrar_total_buscar.setText("Factura no encontrada")
+        factura_buscada = CrudFacturas.buscar_factura(self.cliente, str(self.factura.obtener_fecha))
+        if factura_buscada:
+           self.ui.mostrar_total_buscar.setText("Factura encontrada")
+        else:
+           self.ui.mostrar_total_buscar.setText("Factura no encontrada")
 
 
     @pyqtSlot()
