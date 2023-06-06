@@ -32,15 +32,15 @@ class MyTestCase(unittest.TestCase):
     def test_herencia_producto_control(self):
         #ADVERTENCIA: ¡Para que la prueba sea correcta solo se debe poner 0 en el valor del producto!
         producto_control = ProductoControl("250048172", "Quimicalplags", "cada 15 días", 0)
-        self.assertEqual(float(producto_control.obtener_valor()), 0)
+        self.assertEqual(float(producto_control.obtener_valor), 0)
 
         control_plagas = CrudControlPlagas.crear_plaga("250048172", "Quimicalplags", "cada 15 días", 0, "20 días")
         self.assertIsInstance(control_plagas, ProductoControl)
-        self.assertEqual(float(control_plagas.obtener_valor()), 0)
+        self.assertEqual(float(control_plagas.obtener_valor), 0)
 
         control_fertilizantes = CrudControlFertilizantes.crear_fertilizante("110001098", "Asocrece", "cada 45 días", 0, "09/02/2023")
         self.assertIsInstance(control_fertilizantes, ProductoControl)
-        self.assertEqual(float(control_fertilizantes.obtener_valor()), 0)
+        self.assertEqual(float(control_fertilizantes.obtener_valor), 0)
 
     def test_crear_cliente(self):
         cliente = CrudCliente.crear_cliente("John Doe", "1234567890")
@@ -65,7 +65,7 @@ class MyTestCase(unittest.TestCase):
         cliente = CrudCliente.crear_cliente("Marta Jimenez", "012345896")
         CrudCliente.actualizar_nombre_cliente("012345896", "Jane Smith")
         cliente_actualizado = CrudCliente.buscar_por_cedula("012345896")
-        self.assertEqual(cliente_actualizado.obtener_nombre(), "Jane Smith")
+        self.assertEqual(cliente_actualizado.nombre_cliente, "Jane Smith")
 
 
     def test_eliminar_cliente(self):

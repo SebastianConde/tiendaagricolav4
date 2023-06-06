@@ -1,39 +1,35 @@
 from model.Antibiotico import Antibioticos
+from crud import ICrud
 
-class CrudAntibiotico():
+class CrudAntibiotico(ICrud.ICrud):
     lista_antibioticos = []
 
-    @classmethod
-    def crear_antibiotico(cls, nombre_producto, dosis, tipo_animal, valor_producto):
-        nuevo_antibiotico = Antibioticos(nombre_producto, dosis, tipo_animal, valor_producto)
-        cls.lista_antibioticos.append(nuevo_antibiotico)
+    def crear(self, **kwargs):
+        nuevo_antibiotico = Antibioticos(kwargs['nombre_producto'], kwargs['dosis'], kwargs['tipo_animal'], kwargs['valor_producto'])
+        self.lista_antibioticos.append(nuevo_antibiotico)
         return nuevo_antibiotico
 
-    @classmethod
-    def buscar_antibiotico(cls, nombre_producto):
-        for antibiotico in cls.lista_antibioticos:
-            if(antibiotico.obtener_nombre == nombre_producto):
-                return antibiotico
-
-    @classmethod
-    def actualizar_antibiotico(cls, nombre_producto_antes, nombre_producto_despues, dosis, tipo_animal, valor_producto):
-        antibiotico = cls.buscar_antibiotico(nombre_producto_antes)
+    def actualizar(self, **kwargs):
+        antibiotico = self.buscar(nombre_producto=kwargs['nombre_producto_antes'])
 
         if antibiotico is not None:
-            antibiotico.actualizar_antibiotico(nombre_producto_despues, dosis, tipo_animal, valor_producto)
+            antibiotico.actualizar_antibiotico(kwargs['nombre_producto_despues'], kwargs['dosis'], kwargs['tipo_animal'], kwargs['valor_producto'])
 
-            # Actualizar la lista:
-            for i, antibiotico_lista in enumerate(cls.lista_antibioticos):
+            for i, antibiotico_lista in enumerate(self.lista_antibioticos):
                 if antibiotico_lista == antibiotico:
-                    cls.lista_antibioticos[i].actualizar_antibiotico(nombre_producto_despues, dosis, tipo_animal, valor_producto)
+                    self.lista_antibioticos[i].actualizar_antibiotico(kwargs['nombre_producto_despues'], kwargs['dosis'], kwargs['tipo_animal'], kwargs['valor_producto'])
 
-
-    @classmethod
-    def eliminar_antibiotico(cls, nombre_producto):
-        antibiotico = cls.buscar_antibiotico(nombre_producto)
+    def eliminar(self, **kwargs):
+        antibiotico = self.buscar(nombre_producto=kwargs['nombre_producto'])
 
         if antibiotico is not None:
             antibiotico.eliminar()
+            self.lista_antibioticos.remove(antibiotico)
 
-            #Eliminar de la lista
-            cls.lista_antibioticos.remove(antibiotico)
+    def buscar(self, **kwargs):
+        for antibiotico in self.lista_antibioticos:
+            if antibiotico.obtener_nombre == kwargs['nombre_producto']:
+                return antibiotico
+
+    def relacion( self , ** kwargs ):
+        pass

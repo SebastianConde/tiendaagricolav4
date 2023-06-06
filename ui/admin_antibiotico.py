@@ -26,7 +26,8 @@ class AntibioticosWindow(QMainWindow):
             valor = valor_check
 
         if nombre and dosis and tipo and valor:
-            antibiotico = CrudAntibiotico.crear_antibiotico(nombre, dosis, tipo, valor)
+            crud_antibiotico = CrudAntibiotico()  # Crear una instancia de la clase
+            antibiotico = crud_antibiotico.crear(nombre_producto=nombre, dosis=dosis, tipo_animal=tipo, valor_producto=valor)
             if antibiotico:
                 self.ui.recibe_nombre_antibiotico.clear()
                 self.ui.recibe_dosis.clear()
@@ -42,7 +43,8 @@ class AntibioticosWindow(QMainWindow):
         nombre = self.ui.recibe_nombre_buscar.text()
 
         if nombre:
-            antibiotico = CrudAntibiotico.buscar_antibiotico(nombre)
+            crud_antibiotico = CrudAntibiotico()  # Crear una instancia de la clase
+            antibiotico = crud_antibiotico.buscar(nombre_producto=nombre)
             if antibiotico:
                 self.ui.mostrar_nombre_buscar.setText(antibiotico.obtener_nombre)
                 self.ui.mostrar_dosis_buscar.setText(antibiotico.obtener_dosis)
@@ -63,7 +65,14 @@ class AntibioticosWindow(QMainWindow):
         valor = float(self.ui.recibe_valor_actualizar.text())
 
         if nombre_antes and nombre_nuevo and dosis and tipo and valor:
-            CrudAntibiotico.actualizar_antibiotico(nombre_antes, nombre_nuevo, dosis, tipo, valor)
+            crud_antibiotico = CrudAntibiotico()  # Crear una instancia de la clase
+            antibiotico = crud_antibiotico.actualizar(
+                nombre_producto_antes=nombre_antes,
+                nombre_producto_despues=nombre_nuevo,
+                dosis=dosis,
+                tipo_animal=tipo,
+                valor_producto=valor
+            )
             self.ui.recibe_nombre_antes_actualizar.clear()
             self.ui.recibe_nombre_nuevo_actualizar.clear()
             self.ui.recibe_dosis_actualizar.clear()
@@ -75,7 +84,8 @@ class AntibioticosWindow(QMainWindow):
         nombre = self.ui.recibe_nombre_eliminar.text()
 
         if nombre:
-            CrudAntibiotico.eliminar_antibiotico(nombre)
+            crud_antibiotico = CrudAntibiotico()  # Crear una instancia de la clase
+            crud_antibiotico.eliminar(nombre_producto=nombre)
             self.ui.recibe_nombre_eliminar.clear()
 
 
