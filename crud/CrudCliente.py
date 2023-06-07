@@ -1,6 +1,7 @@
 from model.Clientes import Clientes
+from crud import ICrud
 
-class CrudCliente():
+class CrudCliente(ICrud.ICrud):
     __clientes_creados = []
 
     def crear(self, **kwargs):
@@ -24,19 +25,30 @@ class CrudCliente():
                 self.__clientes_creados[i].nombre_cliente = kwargs['nombre_nuevo']
 
 
-    def eliminar_cliente(cls, numero_cedula):
-        cliente = cls.buscar(numero_cedula)
+    def eliminar(self, **kwargs):
+        cliente = self.buscar(numero_cedula=kwargs['numero_cedula'])
         cliente.eliminar()
 
         #Eliminar de la lista
-        cls.__clientes_creados.remove(cliente)
+        self.__clientes_creados.remove(cliente)
 
+    def relacion(self, **kwargs):
+        cliente = kwargs['cliente']
+        factura = kwargs['factura']
+
+        if cliente is not None and factura is not None:
+            cliente.agregar_factura(factura)
+            return cliente
+
+    @classmethod
     def numero_clientes_registrados(cls):
         return len(cls.__clientes_creados)
 
+    @classmethod
     def obtener_clientes_registrados(cls):
         return cls.__clientes_creados
 
+    @classmethod
     def eliminar_todos_los_clientes(cls):
         cls.__clientes_creados = []
 

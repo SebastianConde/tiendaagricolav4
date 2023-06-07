@@ -6,7 +6,6 @@ class Clientes():
         self.__numero_cedula = numero_cedula
         self.__facturas = []
 
-
     def lista_facturas_asociadas(self):
         return self.__facturas
 

@@ -29,7 +29,8 @@ class PlagaWindow(QMainWindow):
         periodo_carencia = self.ui.recibe_ultima_2.text()
 
         if registro_ICA and nombre and frecuencia and valor and periodo_carencia:
-            plaga = CrudControlPlagas.crear_plaga(registro_ICA, nombre, frecuencia, valor, periodo_carencia)
+            crud_plaga = CrudControlPlagas()  # Crear una instancia de la clase
+            plaga = crud_plaga.crear(registro_ICA=registro_ICA, nombre_producto=nombre, frecuencia_aplicacion=frecuencia, valor_producto=valor, periodo_carencia=periodo_carencia)
             if plaga:
                 self.ui.recibe_registro_ica_2.clear()
                 self.ui.recibe_nombre_plaga_2.clear()
@@ -46,7 +47,8 @@ class PlagaWindow(QMainWindow):
         registro_ICA = self.ui.recibe_registro_ica_buscar_2.text()
 
         if registro_ICA:
-            plaga = CrudControlPlagas.buscar_plaga(registro_ICA)
+            crud_plaga = CrudControlPlagas()
+            plaga = crud_plaga.buscar(registro_ICA=registro_ICA)
             if plaga:
                 self.ui.mostrar_registro_ica_buscar.setText(plaga.obtener_registro_ICA)
                 self.ui.mostrar_nombre_buscar.setText(plaga.obtener_nombre)
@@ -70,7 +72,8 @@ class PlagaWindow(QMainWindow):
         periodo_nuevo = self.ui.recibe_periodo_actualizar_2.text()
 
         if registro_ICA_antes and registro_ICA_nuevo and nombre_nuevo and frecuencia_nueva and valor_nuevo and periodo_nuevo:
-            CrudControlPlagas.actualizar_plaga(registro_ICA_antes, registro_ICA_nuevo, nombre_nuevo, frecuencia_nueva, valor_nuevo, periodo_nuevo)
+            crud_plaga = CrudControlPlagas()
+            crud_plaga.actualizar(registro_ICA_antes=registro_ICA_antes, registro_ICA_despues=registro_ICA_nuevo, nombre_producto_despues=nombre_nuevo, frecuencia_aplicacion_despues=frecuencia_nueva, valor_producto_despues=valor_nuevo, periodo_carencia_despues=periodo_nuevo)
             self.ui.recibe_registro_ica_antes_actualizar.clear()
             self.ui.recibe_registro_ica_actualizar_2.clear()
             self.ui.recibe_nombre_actualizar_2.clear()
@@ -83,7 +86,8 @@ class PlagaWindow(QMainWindow):
         registro_ICA = self.ui.recibe_registro_ica_eliminar_2.text()
 
         if registro_ICA:
-            CrudControlPlagas.eliminar_plaga(registro_ICA)
+            crud_plaga = CrudControlPlagas()
+            crud_plaga.eliminar(registro_ICA=registro_ICA)
             self.ui.recibe_registro_ica_eliminar_2.clear()
 
 

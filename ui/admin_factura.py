@@ -8,6 +8,7 @@ from crud.CrudAntibiotico import CrudAntibiotico
 from ui.admin_popup import Popup
 from model.Facturas import Facturas
 from ui.admin_factura_buscada import Factura_buscadaWindow
+from crud.CrudCliente import CrudCliente
 
 
 class FacturasWindow(QMainWindow):
@@ -40,11 +41,15 @@ class FacturasWindow(QMainWindow):
 
     @pyqtSlot()
     def crear_factura(self):
-        factura = CrudFacturas.crear_Factura()
+        crud_factura = CrudFacturas()
+        crud_cliente = CrudCliente()
+
+        factura = crud_factura.crear()
+        cliente = crud_cliente.relacion(cliente=self.cliente, factura=factura)
+        crud_factura.relacion(factura=factura, cliente=cliente)
+
         if factura:
             self.factura = factura
-            self.factura.recibir_datos_cliente(self.cliente)
-            self.cliente.agregar_factura(self.factura)
             self.ui.mostrar_fecha.setText(str(self.factura.obtener_fecha))
             popup = Popup()
             popup.mensaje_popup("Factura creada exitosamente")
@@ -56,7 +61,8 @@ class FacturasWindow(QMainWindow):
 
     @pyqtSlot()
     def buscar_factura(self):
-        factura_buscada = CrudFacturas.buscar_factura(self.cliente, str(self.factura.obtener_fecha))
+        crud_factura = CrudFacturas()
+        factura_buscada = crud_factura.buscar(cliente= self.cliente, fecha= str(self.factura.obtener_fecha))
         if factura_buscada:
            self.ui.mostrar_total_buscar.setText("Factura encontrada")
         else:
@@ -71,7 +77,8 @@ class FacturasWindow(QMainWindow):
         producto = self.buscar_producto(nombre_producto)
 
         if nombre_producto and cantidad:
-            CrudFacturas.actualizar_factura(self.factura, producto, cantidad)
+            crud_factura = CrudFacturas()
+            crud_factura.actualizar(factura=self.factura, producto=producto, cantidad=cantidad)
             self.ui.recibir_nombre_actualizar.clear()
             self.ui.recibir_cantidad_actualizar.clear()
             popup = Popup()
@@ -107,7 +114,8 @@ class FacturasWindow(QMainWindow):
         fecha = self.ui.recibir_fecha_eliminar.text()
 
         if fecha:
-            CrudFacturas.eliminar_factura(self.cliente, fecha)
+            crud_factura = CrudFacturas()
+            crud_factura.eliminar(cliente=self.cliente, fecha=fecha)
             self.ui.recibir_fecha_eliminar.clear()
 
 

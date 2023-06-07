@@ -27,7 +27,8 @@ class ClientesWindow(QMainWindow):
         nombre = self.ui.recibe_nombre_cliente.text()
 
         if numero_cedula and nombre:
-            cliente = CrudCliente.crear_cliente(nombre, numero_cedula)
+            crud_cliente = CrudCliente()  # Crear una instancia de la clase
+            cliente = crud_cliente.crear(nombre=nombre, numero_cedula=numero_cedula)
             if cliente:
                 self.ui.recibe_numero_cedula.clear()
                 self.ui.recibe_nombre_cliente.clear()
@@ -41,7 +42,8 @@ class ClientesWindow(QMainWindow):
         numero_cedula = self.ui.recibe_cedula_buscar.text()
 
         if numero_cedula:
-            cliente = CrudCliente.buscar_por_cedula(numero_cedula)
+            crud_cliente = CrudCliente()
+            cliente = crud_cliente.buscar(numero_cedula=numero_cedula)
             if cliente:
                 self.ui.mostrar_cedula_cliente_buscar.setText(cliente.obtener_cedula)
                 self.ui.mostrar_nombre_cliente_buscar.setText(cliente.nombre_cliente)
@@ -63,7 +65,8 @@ class ClientesWindow(QMainWindow):
         nombre_nuevo = self.ui.recibe_nombre_cliente_actualizar.text()
 
         if numero_cedula and nombre_nuevo:
-            CrudCliente.actualizar_nombre_cliente(numero_cedula, nombre_nuevo)
+            crud_cliente = CrudCliente()
+            crud_cliente.actualizar(numero_cedula=numero_cedula, nombre_nuevo=nombre_nuevo)
             self.ui.recibe_cedula_actualizar.clear()
             self.ui.recibe_nombre_cliente_actualizar.clear()
 
@@ -72,7 +75,8 @@ class ClientesWindow(QMainWindow):
         numero_cedula = self.ui.recibe_cedula_eliminar.text()
 
         if numero_cedula:
-            CrudCliente.eliminar_cliente(numero_cedula)
+            crud_cliente = CrudCliente()
+            crud_cliente.eliminar(numero_cedula=numero_cedula)
             self.ui.recibe_cedula_eliminar.clear()
 
 

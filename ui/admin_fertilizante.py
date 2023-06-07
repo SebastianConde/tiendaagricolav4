@@ -30,7 +30,8 @@ class FertilizantesWindow(QMainWindow):
         ultima_aplicacion = self.ui.recibe_ultima_2.text()
 
         if registro_ICA and nombre and frecuencia and valor and ultima_aplicacion:
-            fertilizante = CrudControlFertilizantes.crear_fertilizante(registro_ICA, nombre, frecuencia, valor, ultima_aplicacion)
+            crud_fertilizante = CrudControlFertilizantes()  # Crear una instancia de la clase
+            fertilizante = crud_fertilizante.crear(registro_ICA=registro_ICA, nombre_producto=nombre, frecuencia_aplicacion=frecuencia, valor_producto=valor, ultima_aplicacion=ultima_aplicacion)
             if fertilizante:
                 self.ui.recibe_registro_ica_2.clear()
                 self.ui.recibe_nombre_fertilizante_2.clear()
@@ -47,7 +48,8 @@ class FertilizantesWindow(QMainWindow):
         registro_ICA = self.ui.recibe_registro_ica_buscar_2.text()
 
         if registro_ICA:
-            fertilizante = CrudControlFertilizantes.buscar_fertilizante(registro_ICA)
+            crud_fertilizante = CrudControlFertilizantes()
+            fertilizante = crud_fertilizante.buscar(registro_ICA=registro_ICA)
             if fertilizante:
                 self.ui.mostrar_registro_ica_buscar.setText(fertilizante.obtener_registro_ICA)
                 self.ui.mostrar_nombre_buscar.setText(fertilizante.obtener_nombre)
@@ -71,7 +73,8 @@ class FertilizantesWindow(QMainWindow):
         ultima_nuevo = self.ui.recibe_ultima_actualizar_2.text()
 
         if registro_ICA_antes and registro_ICA_nuevo and nombre_nuevo and frecuencia_nueva and valor_nuevo and ultima_nuevo:
-            CrudControlFertilizantes.actualizar_fertilizante(registro_ICA_antes, registro_ICA_nuevo, nombre_nuevo, frecuencia_nueva, valor_nuevo, ultima_nuevo)
+            crud_fertilizante = CrudControlFertilizantes()
+            crud_fertilizante.actualizar(registro_ICA_antes=registro_ICA_antes, registro_ICA_despues=registro_ICA_nuevo, nombre_producto_despues=nombre_nuevo, frecuencia_aplicacion_despues=frecuencia_nueva, valor_producto_despues=valor_nuevo, ultima_aplicacion_despues=ultima_nuevo)
             self.ui.recibe_registro_ica_antes_actualizar.clear()
             self.ui.recibe_registro_ica_actualizar_2.clear()
             self.ui.recibe_nombre_actualizar_2.clear()
@@ -84,7 +87,8 @@ class FertilizantesWindow(QMainWindow):
         registro_ICA = self.ui.recibe_registro_ica_eliminar_2.text()
 
         if registro_ICA:
-            CrudControlFertilizantes.eliminar_fertilizante(registro_ICA)
+            crud_fertilizante = CrudControlFertilizantes()
+            crud_fertilizante.eliminar(registro_ICA=registro_ICA)
             self.ui.recibe_registro_ica_eliminar_2.clear()
 
     def abrir_popup(self):
